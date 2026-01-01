@@ -1,0 +1,238 @@
+{
+	"name": "RestrictedWorkflows",
+	"author": "Reception123",
+	"url": "https://github.com/miraheze/RestrictedWorkflows",
+	"descriptionmsg": "restrictedworkflows-desc",
+	"namemsg": "restrictedworkflows-extensionname",
+	"license-name": "GPL-3.0-or-later",
+	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.44.0",
+		"platform": {
+			"php": ">= 8.2"
+		}
+	},
+	"MessagesDirs": {
+		"RenameWiki": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"RenameWikiAliases": "RenameWikiAliases.php"
+	},
+	"AutoloadNamespaces": {
+		"Miraheze\\RenameWiki\\": "includes/"
+	},
+	"TestAutoloadNamespaces": {
+		"Miraheze\\RenameWiki\\Tests\\": "tests/phpunit/"
+	},
+	"JobClasses": {
+		"RenameWikiJob": {
+			"class": "Miraheze\\RenameWiki\\Jobs\\RenameWikiJob",
+			"services": [
+				"ConnectionProvider",
+				"RenameWikiConfig",
+				"RenameWikiHookRunner",
+				"RenameWikiRequestManager",
+				"JobQueueGroupFactory",
+				"WikiImporterFactory"
+			],
+			"needsPage": false
+		},
+		"RenameWikiNotifyJob": {
+			"class": "Miraheze\\RenameWiki\\Jobs\\RenameWikiNotifyJob",
+			"services": [
+				"ExtensionRegistry",
+				"RenameWikiConfig",
+				"RenameWikiRequestManager",
+				"UserFactory"
+			],
+			"needsPage": false
+		}
+	},
+	"GroupPermissions": {
+		"user": {
+			"request-renamewiki": true
+		}
+	},
+	"AvailableRights": [
+		"handle-renamewiki-request-interwiki",
+		"handle-renamewiki-requests",
+		"request-renamewiki",
+		"view-private-renamewiki-requests"
+	],
+	"LogActionsHandlers": {
+		"renamewiki/*": "MediaWiki\\Logging\\LogFormatter",
+		"renamewikiprivate/*": "MediaWiki\\Logging\\LogFormatter"
+	},
+	"LogHeaders": {
+		"renamewiki": "renamewiki-log-header",
+		"renamewikiprivate": "renamewikiprivate-log-header"
+	},
+	"LogNames": {
+		"renamewiki": "renamewiki-log-name",
+		"renamewikiprivate": "renamewikiprivate-log-name"
+	},
+	"LogTypes": [
+		"renamewiki",
+		"renamewikiprivate"
+	],
+	"LogRestrictions": {
+		"renamewikiprivate": "view-private-renamewiki-requests"
+	},
+	"ActionFilteredLogs": {
+		"renamewiki": {
+			"interwiki": [
+				"interwiki"
+			],
+			"request": [
+				"request"
+			],
+			"started": [
+				"started"
+			],
+			"statusupdate": [
+				"statusupdate"
+			]
+		},
+		"renamewikiprivate": {
+			"interwiki": [
+				"interwiki"
+			],
+			"request": [
+				"request"
+			],
+			"started": [
+				"started"
+			],
+			"statusupdate": [
+				"statusupdate"
+			]
+		}
+	},
+	"SpecialPages": {
+		"RequestRenameWiki": {
+			"class": "Miraheze\\RenameWiki\\Specials\\SpecialRequestRenameWiki",
+			"services": [
+				"ConnectionProvider",
+				"ExtensionRegistry",
+				"MimeAnalyzer",
+				"RepoGroup",
+				"UserFactory"
+			],
+			"optional_services": [
+				"ManageWikiModuleFactory"
+			]
+		},
+		"RequestRenameWikiQueue": {
+			"class": "Miraheze\\RenameWiki\\Specials\\SpecialRequestRenameWikiQueue",
+			"services": [
+				"ConnectionProvider",
+				"RenameWikiRequestManager",
+				"UserFactory"
+			]
+		}
+	},
+	"Hooks": {
+		"BeforeCreateEchoEvent": {
+			"handler": "Notifications"
+		},
+		"GetAllBlockActions": {
+			"handler": "Main"
+		},
+		"LoadExtensionSchemaUpdates": {
+			"handler": "Installer"
+		},
+		"LoginFormValidErrorMessages": {
+			"handler": "Main"
+		},
+		"UserGetReservedNames": {
+			"handler": "Main"
+		}
+	},
+	"HookHandlers": {
+		"Installer": {
+			"class": "Miraheze\\RenameWiki\\Hooks\\Handlers\\Installer"
+		},
+		"Main": {
+			"class": "Miraheze\\RenameWiki\\Hooks\\Handlers\\Main",
+			"services": [
+				"ConnectionProvider"
+			]
+		},
+		"Notifications": {
+			"class": "Miraheze\\RenameWiki\\Hooks\\Handlers\\Notifications",
+			"services": [
+				"ConnectionProvider"
+			]
+		}
+	},
+	"ResourceModules": {
+		"ext.renamewiki.oouiform": {
+			"scripts": "ext.renamewiki.oouiform.ooui.js",
+			"dependencies": [
+				"mediawiki.storage",
+				"oojs-ui-widgets"
+			]
+		},
+		"ext.renamewiki.oouiform.styles": {
+			"styles": "ext.renamewiki.oouiform.ooui.less"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "RenameWiki/modules"
+	},
+	"config": {
+		"RenameWikiEnableAutomatedJob": {
+			"value": false,
+			"description": "Whether to enable a job where a reviewer just has to 'approve' an renamewiki and job handles everything else. You can use the RenameWikiJobGetFile hook to manipulate how the job gets the XML file."
+		},
+		"RenameWikiHelpUrl": {
+			"value": "",
+			"description": "Full URL. If set, adds a help URL to Special:RequestRenameWiki."
+		},
+		"RenameWikiInterwikiMap": {
+			"value": [],
+			"description": "A mapping of 'domain => interwiki prefix' for multi-level interwiki prefix generation for --username-prefix."
+		},
+		"RenameWikiScriptCommand": {
+			"value": "php {IP}/maintenance/RenameWiki.php --wiki={wiki} --username-prefix=\"{username-prefix}\" {file-path}",
+			"description": "Generated maintenance script command to use. If $wgRenameWikiEnableAutomatedJob is enabled, this is not displayed unless the status is 'failed'."
+		},
+		"RenameWikiUsersNotifiedOnAllRequests": {
+			"value": [],
+			"description": "Array of usernames to send email notifications to for all requests. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed."
+		},
+		"RenameWikiUsersNotifiedOnFailedRenameWikis": {
+			"value": [],
+			"description": "Array of usernames to send email notifications to for failed renamewikis. Users listed here must have a verified email address on their account. This doesn't do anything if the Echo extension is not installed or if $wgRenameWikiEnableAutomatedJob is not enabled."
+		}
+	},
+	"ConfigRegistry": {
+		"RenameWiki": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
+	},
+	"DefaultUserOptions": {
+		"echo-subscriptions-email-renamewiki-renamewiki-failed": true,
+		"echo-subscriptions-email-renamewiki-new-request": true,
+		"echo-subscriptions-email-renamewiki-request-comment": true,
+		"echo-subscriptions-email-renamewiki-request-status-update": true,
+		"echo-subscriptions-web-renamewiki-request-comment": true,
+		"echo-subscriptions-web-renamewiki-request-status-update": true
+	},
+	"RateLimits": {
+		"request-renamewiki": {
+			"user": [
+				5,
+				60
+			]
+		}
+	},
+	"ServiceWiringFiles": [
+		"includes/ServiceWiring.php"
+	],
+	"DatabaseVirtualDomains": [
+		"virtual-renamewiki"
+	],
+	"manifest_version": 2
+}
