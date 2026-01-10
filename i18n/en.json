@@ -42,6 +42,7 @@
 	"renamewiki-interwiki-failed": "Interwiki prefix was not added to $1. It might already be present, or another error occured.",
 	"renamewiki-interwiki-success": "Interwiki prefix successfully added to $1.",
 	"renamewiki-invalid-interwiki-url": "The provided interwiki URL is not valid.",
+	"renamewiki-invalid-source": "The provided source is not a valid database name.",
 	"renamewiki-invalid-target": "The provided target is not a valid database name.",
 	"renamewiki-label-add-comment": "Add Comment",
 	"renamewiki-label-all": "All",
