@@ -197,7 +197,7 @@
 			"description": "A mapping of 'domain => interwiki prefix' for multi-level interwiki prefix generation for --username-prefix."
 		},
 		"RenameWikiScriptCommand": {
-			"value": "php {IP}/maintenance/RenameWiki.php --wiki={wiki} --username-prefix=\"{username-prefix}\" {file-path}",
+			"value": "mwscript MirahezeMagic:RenameDatabase loginwiki --rename --old={oldwiki} --new={newwiki} --user=Restricted_Workflows",
 			"description": "Generated maintenance script command to use. If $wgRenameWikiEnableAutomatedJob is enabled, this is not displayed unless the status is 'failed'."
 		},
 		"RenameWikiUsersNotifiedOnAllRequests": {
