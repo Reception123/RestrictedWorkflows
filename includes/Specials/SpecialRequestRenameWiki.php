@@ -84,7 +84,7 @@ class SpecialRequestRenameWiki extends FormSpecialPage
 				'label-message' => 'renamewiki-label-newwiki',
 				'help-message' => 'renamewiki-help-newwiki',
 				'required' => true,
-//				'validation-callback' => [ $this, 'isValidDatabase' ],
+				'validation-callback' => [ $this, 'isInvalidDatabase' ],
 			],
 			'reason' => [
 				'type' => 'textarea',
@@ -94,7 +94,7 @@ class SpecialRequestRenameWiki extends FormSpecialPage
 				'required' => true,
 				'validation-callback' => [ $this, 'isValidReason' ],
 			],
-		];			
+		];
 
 		return $formDescriptor;
 	}
@@ -241,12 +241,26 @@ class SpecialRequestRenameWiki extends FormSpecialPage
 		}
 	}
 
-	public function isValidDatabase( ?string $oldwiki ): Message|true {
-		if ( !in_array( $newwiki, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true ) ) {
+	private function validateDatabase( ?string $wiki, bool $mustExist ): Message|true {
+		$exists = in_array( $wiki, $this->getConfig()->get( MainConfigNames::LocalDatabases ), true );
+
+		if ( $mustExist && !$exists ) {
+			return $this->msg( 'renamewiki-invalid-source' );
+		}
+
+		if ( !$mustExist && ( $exists || !str_ends_with( $wiki, 'wiki' ) ) ) {
 			return $this->msg( 'renamewiki-invalid-target' );
 		}
 
 		return true;
+	}
+
+	public function isValidDatabase( ?string $wiki ): Message|true {
+		return $this->validateDatabase( $wiki, true );
+	}
+
+	public function isInvalidDatabase( ?string $wiki ): Message|true {
+		return $this->validateDatabase( $wiki, false );
 	}
 
 	public function isValidReason( ?string $reason ): Message|true {
@@ -291,5 +305,10 @@ class SpecialRequestRenameWiki extends FormSpecialPage
 	/** @inheritDoc */
 	protected function getGroupName(): string {
 		return 'other';
+	}
+
+	/** @inheritDoc */
+	public function doesWrites(): bool {
+		return true;
 	}
 }
