@@ -327,7 +327,7 @@ class RequestManager {
 			->execute();
 	}
 
-	public function setNewWiki( string $target ): void {
+	public function setNewWiki( string $newwiki ): void {
 		$this->dbw->newUpdateQueryBuilder()
 			->update( 'renamewiki_requests' )
 			->set( [ 'request_newwiki' => $newwiki ] )
