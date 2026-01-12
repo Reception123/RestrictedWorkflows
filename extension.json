@@ -185,7 +185,7 @@
 	},
 	"config": {
 		"RenameWikiEnableAutomatedJob": {
-			"value": false,
+			"value": true,
 			"description": "Whether to enable a job where a reviewer just has to 'approve' an renamewiki and job handles everything else. You can use the RenameWikiJobGetFile hook to manipulate how the job gets the XML file."
 		},
 		"RenameWikiHelpUrl": {
