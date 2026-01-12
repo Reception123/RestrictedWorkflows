@@ -6,7 +6,7 @@ CREATE TABLE /*_*/renamewiki_requests (
   request_id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
   request_actor BIGINT UNSIGNED NOT NULL,
   request_timestamp BINARY(14) NOT NULL,
-  request_oldwiki VARCHAR(255) NOT NULL,
+  request_oldwiki VARCHAR(64) NOT NULL,
   request_newwiki VARCHAR(64) NOT NULL,
   request_reason BLOB NOT NULL,
   request_status ENUM(
@@ -19,8 +19,8 @@ CREATE TABLE /*_*/renamewiki_requests (
     request_actor, request_timestamp
   ),
   INDEX request_timestamp (request_timestamp),
-  INDEX request_newwiki (request_newwiki),
   INDEX request_oldwiki (request_oldwiki),
+  INDEX request_newwiki (request_newwiki),
   INDEX request_status (request_status),
   PRIMARY KEY(request_id)
 ) /*$wgDBTableOptions*/;
