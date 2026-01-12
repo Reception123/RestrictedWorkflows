@@ -350,7 +350,7 @@ class RequestViewer implements RenameWikiStatus {
 		return true;
 	}
 
-	public function isValidDatabase( ?string $target ): Message|true {
+	public function isValidDatabase( ?string $oldwiki ): Message|true {
 		if ( !in_array( $target, $this->config->get( MainConfigNames::LocalDatabases ), true ) ) {
 			return $this->context->msg( 'renamewiki-invalid-target' );
 		}
