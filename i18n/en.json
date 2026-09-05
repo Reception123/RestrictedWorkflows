@@ -8,7 +8,7 @@
 	"mirahezerequests-extensionname": "MirahezeRequests",
 	"mirahezerequests-success": "Your request has been successfully submitted. You can view your request, and its status, here: $1",
 	"mirahezerequests-label-accept": "Accept request",
-	"mirahezerequests-label-decline": "decline request",
+	"mirahezerequests-label-decline": "Decline request",
 	"mirahezerequests-label-decline-reason": "Reason for declining:",
 	"mirahezerequests-label-requested-date": "Requested",
 	"mirahezerequests-label-requester": "Requester",
